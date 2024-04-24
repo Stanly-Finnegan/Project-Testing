@@ -5,7 +5,15 @@
 
         <q-form class=" q-gutter-y-md column items-center "  style="width: 50%;">
           <q-input v-model="email" outlined rounded placeholder="Email"  class=""  style="width: 100%;"></q-input>
-          <q-input v-model="password" outlined rounded placeholder="Password" class="" style="width: 100%;" ></q-input>
+          <q-input v-model="password" :type="isPwd ? 'password' : 'text'" outlined rounded placeholder="Password" class="" style="width: 100%;" >
+            <template v-slot:append>
+              <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
 
           <div class="q-mt-lg column q-gutter-y-md" style="width: 25%;">
             <q-btn rounded size="md" label="Log In" color="primary" @click="btnLogin"/>
@@ -39,6 +47,7 @@ import { api } from 'src/boot/axios.js'
 const router = useRouter()
 
 const alertDialog = ref(false)
+const isPwd = ref(true)
 
 const email = ref('')
 const password = ref('')
@@ -48,6 +57,8 @@ const btnLogin = () => {
     email: email.value,
     password: password.value
   }).then((response) => {
+    // console.log(response)
+    localStorage.setItem('token', response.data)
     router.push('home')
   }).catch((err) => {
     console.log(err)

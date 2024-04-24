@@ -10,6 +10,12 @@ import axios from 'axios'
 const api = axios.create({
   baseURL: 'http://localhost:8080/',
   transformRequest: (data, headers) => {
+    if (localStorage.getItem('token') !== null && localStorage.getItem('token') !== '') {
+      headers.Authorization = 'Bearer ' + localStorage.getItem('token')
+    } else {
+      headers.Authorization = null
+    }
+
     if (headers.Accept === '*/*') {
       headers['Content-Type'] = 'application/x-www-form-urlencoded'
       const objFormData = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&')

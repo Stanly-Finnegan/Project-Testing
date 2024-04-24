@@ -1,22 +1,46 @@
 <template>
   <q-layout>
     <div style="width: 100vw; height:100vh;" class="q-pa-xl column items-center">
-        <h1 class="q-mb-xl text-center">Home</h1>
+        <div style="width:100%">
+          <q-icon
+          size="lg"
+          color="red"
+          name="logout"
+          class="cursor-pointer"
+          />
+        </div>
 
-        <!-- <q-form class=" q-gutter-y-md column items-center "  style="width: 50%;">
-          <q-input outlined rounded placeholder="Email"  class=""  style="width: 100%;"></q-input>
-          <q-input outlined rounded placeholder="Password" class="" style="width: 100%;" ></q-input>
-
-          <div class="q-mt-lg column q-gutter-y-md" style="width: 25%;">
-            <q-btn rounded size="md" label="Log In" color="primary" />
-            <q-btn rounded outline size="md" label="Register" color="light-blue-10" />
-          </div>
-        </q-form> -->
-
+      <h2 class="q-mb-xl text-center text-weight-bold">{{ name }}'s Todolist</h2>
+      <q-btn unelevated round color="primary" size="md" icon ='add' @click="addDialogStatus=true"/>
     </div>
+
+    <addDialog :dialogStatus="addDialogStatus" @onClose="addDialogStatus=false"/>
+
   </q-layout>
 </template>
 
 <script setup>
+import { api } from 'src/boot/axios'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import addDialog from 'components/ComponentDialogAdd.vue'
+
+const name = ref('')
+const router = useRouter()
+const addDialogStatus = ref(false)
+
+// FETCH DATA
+const fetchData = () => {
+  api.get('fetchData')
+    .then((response) => {
+      name.value = response.data
+    })
+    .catch((err) => {
+      console.error(err)
+      router.replace('/')
+    })
+}
+fetchData()
+// END FETCH DATA
 
 </script>
