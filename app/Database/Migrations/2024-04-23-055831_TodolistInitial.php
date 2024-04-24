@@ -28,6 +28,10 @@ class TodolistInitial extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '100',
             ],
+            'image' => [
+                'type' => 'VARCHAR',
+                'constraint' => '200'
+            ],
             'description' => [
                 'type' => 'TEXT',
                 'null' => true

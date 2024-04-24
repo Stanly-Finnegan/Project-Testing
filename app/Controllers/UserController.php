@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\AuthenticationModel;
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
 use Ramsey\Uuid\Uuid;
@@ -12,17 +13,27 @@ class UserController extends BaseController{
   public function loginUser () {
     $post_data = $this->request->getPost();
 
-
     $userModel = new UserModel();
+    $authenticationModel = new AuthenticationModel();
  
-
     $userData = $userModel->where('email', $post_data['email'])->first();
 
     if($userData && password_verify($post_data['password'], $userData->password)){
-      $this->respond('Login Successfully!');
+      $authenticationData = [
+        'uuid' => Uuid::uuid4(),
+        'user_id' => $userData->id,
+        'token' => Uuid::uuid4(),
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => null,
+        'deleted_at' => null
+      ];
+      
+      if($authenticationModel->insert($authenticationData)){
+        return $this->respond($authenticationData['token']);
+      }
     }
     else{
-      $this->fail('Account does not match');
+      return $this->fail('Account does not match');
     }
 
   }
@@ -36,6 +47,7 @@ class UserController extends BaseController{
       return $this->fail($validatoin->getErrors());
     }
 
+
     $data = [
       'uuid' => Uuid::uuid4(),
       'name' => $post_data['name'],
@@ -46,13 +58,14 @@ class UserController extends BaseController{
       'deleted_at' => null
     ];
 
+
     $userModel = new UserModel();
 
     if($userModel->insert( $data )){
-      $this->respond('Register Successfully!');
+      return $this->respond('Register Successfully!');
     }
     else{
-      $this->fail('Fail  to Register Account. Please try again later.');
+      return $this->fail('Fail  to Register Account. Please try again later.');
     }
 
   }

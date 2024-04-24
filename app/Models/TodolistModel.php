@@ -1,6 +1,6 @@
 <?php
 
-namespace APp\Models;
+namespace App\Models;
 
 use CodeIgniter\Model;
 use Config\App;
@@ -17,6 +17,7 @@ class TodolistModel extends Model
     'uuid',
     'user_id',
     'title',
+    'image',
     'description',
     'created_at',
     'updated_at',
@@ -33,16 +34,20 @@ class TodolistModel extends Model
   protected $deletedField = 'deleted_at';
 
   protected $validationRules = [
-    'uuid' => [
-      'label' =>  'UUID',
-      'rules' => 'required|is_unique[todolist_trs.uuid]'
-    ],
+    // 'uuid' => [
+    //   'label' =>  'UUID',
+    //   'rules' => 'required|is_unique[todolist_trs.uuid]'
+    // ],
     'user_id' => [
       'label' =>  'User ID',
       'rules' => 'required'
     ],
     'title' => [
       'label' => 'Title',
+      'rules' => 'required'
+    ],
+    'image' => [
+      'label' => 'Image',
       'rules' => 'required'
     ],
     'description' => [

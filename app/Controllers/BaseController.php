@@ -55,4 +55,18 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
     }
+
+    protected function _checkAuthorization() {
+        $bearerToken = $this->request->getHeaderLine('Authorization');
+    
+        if((string) $bearerToken !== '' && (string) $bearerToken !== null){
+          $explodeBearerToken = explode('', $bearerToken);
+    
+          if($explodeBearerToken[0] === 'Bearer'){
+            return $explodeBearerToken[1];
+          }
+        }
+    
+        return true;
+      }
 }

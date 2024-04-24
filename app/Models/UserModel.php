@@ -1,6 +1,6 @@
 <?php
 
-namespace APp\Models;
+namespace App\Models;
 
 use CodeIgniter\Model;
 use Config\App;
@@ -15,7 +15,6 @@ class UserModel extends Model
 
 
   protected $allowedFields = [
-    'id',
     'uuid',
     'name',
     'email',

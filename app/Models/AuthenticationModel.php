@@ -1,11 +1,11 @@
 <?php
 
-namespace APp\Models;
+namespace App\Models;
 
 use CodeIgniter\Model;
 use Config\App;
 
-class UserModel extends Model
+class AuthenticationModel extends Model
 {
 
   protected $table = 'auth_trs';
@@ -23,7 +23,7 @@ class UserModel extends Model
     'deleted_at'
   ];
 
-  protected $returnType = \App\Entities\User::class;
+  protected $returnType = \App\Entities\Authentication::class;
 
 
   protected $useTimestamps = true;
@@ -33,10 +33,10 @@ class UserModel extends Model
   protected $deletedField = 'deleted_at';
 
   protected $validationRules = [
-    'uuid' => [
-      'label' =>  'UUID',
-      'rules' => 'required|is_unique[auth_trs.uuid]'
-    ],
+    // 'uuid' => [
+    //   'label' =>  'UUID',
+    //   'rules' => 'required|is_unique[auth_trs.uuid]'
+    // ],
     'user_id' => [
       'label' => 'User ID',
       'rules' => 'required'
